@@ -1,0 +1,23 @@
+
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: majujaya_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: maju_jaya
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  etl:
+    build: ./etl
+    container_name: majujaya_etl
+    depends_on:
+      - mysql
+    volumes:
+      - ./data:/data
